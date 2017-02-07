@@ -27,7 +27,6 @@ app.post('/chatbot', function(req, res) {
   console.log('webhook PAYLOAD:\n', JSON.stringify(req.body, null, 4));
 
   const appUserId = req.body.appUser._id;
-  // Call REST API to send message https://docs.smooch.io/rest/#post-message
   if (req.body.trigger === 'message:appUser') {
 
       var request = apiapp.textRequest(req.body.messages[0].text, {
