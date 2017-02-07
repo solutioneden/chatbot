@@ -5,10 +5,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Smooch = require('smooch-core');
 
+var config = require('./config');
+
 // Config
-const PORT = 8000;
-const KEY_ID = 'app_58994ddebc248758008df433';
-const SECRET = 'CvOHTJk3kWX47994J1Ck7GrC';
+const PORT = config.port;
+const KEY_ID = config.smooth.keyId;
+const SECRET = config.smooth.secret;
 
 const smooch = new Smooch({
     keyId: KEY_ID,
@@ -17,7 +19,7 @@ const smooch = new Smooch({
 });
 
 var apiai = require('apiai');
-var apiapp = apiai("047aa0a74e594b58b28466260427a574");
+var apiapp = apiai(config.api.keyId);
 
 const app = express();
 
@@ -35,6 +37,23 @@ app.post('/chatbot', function(req, res) {
 
       request.on('response', function(response) {
           console.log(response);
+
+          console.log(JSON.stringify(response, null, 4));
+
+          if (typeof response.result.fulfillment.messages !== 'undefined' && response.result.fulfillment.messages !== null){
+
+            console.log('message: ' + response.result.fulfillment.messages[0].imageUrl);
+                smooch.appUsers.sendMessage(appUserId, {
+                    type: 'image',
+                    mediaUrl: response.result.fulfillment.messages[0].imageUrl,
+                    role: 'appMaker'
+                }).then((response) => {
+                    res.end();
+                }).catch((err) => {
+                  console.log(err);
+                    res.end();
+                });             
+          }
 
           smooch.appUsers.sendMessage(appUserId, {
               type: 'text',
