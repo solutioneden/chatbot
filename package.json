@@ -1,12 +1,12 @@
 {
-  "name": "smooch-api-quickstart-example",
+  "name": "clare chatbot",
   "version": "1.0.0",
-  "description": "Sample code to get started with the Smooch REST APIs",
+  "description": "Smooch to ApiAI to Node Service",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "spasiu",
+  "author": "saint",
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.15.2",
