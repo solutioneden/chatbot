@@ -5,12 +5,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Smooch = require('smooch-core');
 
-var config = require('./config');
+const config = require('config');
+module.exports = require('./config/' + (process.env.NODE_ENV || 'saint') + '.json');
+console.log('NODE_ENV: ' + config.util.getEnv('NODE_ENV'));
 
 // Config
-const PORT = config.port;
-const KEY_ID = config.smooth.keyId;
-const SECRET = config.smooth.secret;
+const PORT = config.get('port');
+const KEY_ID = config.get('smooch.key_id');
+const SECRET = config.get('smooch.secret');
 
 const smooch = new Smooch({
     keyId: KEY_ID,
@@ -18,10 +20,15 @@ const smooch = new Smooch({
     scope: 'app'
 });
 
-var apiai = require('apiai');
-var apiapp = apiai(config.api.keyId);
+const apiai = require('apiai');
+const apiapp = apiai(config.get('api.key_id'));
 
 const app = express();
+
+console.log('port: ' + config.get('port'));
+console.log('smooch key_id: ' + config.get('smooch.key_id'));
+console.log('smooch secret: ' + config.get('smooch.secret'));
+console.log('api key_id: ' + config.get('api.key_id'));
 
 app.use(bodyParser.json());
 
@@ -31,7 +38,7 @@ app.post('/chatbot', function(req, res) {
   const appUserId = req.body.appUser._id;
   if (req.body.trigger === 'message:appUser') {
 
-      var request = apiapp.textRequest(req.body.messages[0].text, {
+      let request = apiapp.textRequest(req.body.messages[0].text, {
           sessionId: appUserId
       });
 
