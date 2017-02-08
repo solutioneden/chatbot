@@ -1,0 +1,10 @@
+{
+  "smooch": {
+    "key_id": "app_5899c3d54e1df55100f6b132",
+    "secret": "8A-TnBE709WZfKw-tyVkWSRA"
+  },
+  "api": {
+    "key_id": "e586297427934383854e6e2380ec9a47"
+  },
+  "port": 8000
+}
